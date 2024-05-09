@@ -17,6 +17,7 @@ connect_db(app)
 
 @app.route("/")
 def home():
+    """Home Page: Shows Available pets first, then pets that are unavailable"""
     pets_available = db.session.query(Pet).filter(Pet.available).all()
     pets_not_available = db.session.query(Pet).filter(
         Pet.available == 'n').all()
@@ -27,6 +28,8 @@ def home():
 
 @app.route("/<int:pet_id>", methods=["GET", "POST"])
 def pet_details(pet_id):
+    """Pet Details Page: Edit form enabled on this page. Disables input
+    for values which cannot be changed."""
     pet = db.get_or_404(Pet, pet_id)
     form = EditPetForm(obj=pet)
     form.hidden_species = pet.species
@@ -53,6 +56,8 @@ def pet_details(pet_id):
 
 @app.route("/add", methods=["GET", "POST"])
 def add_new_pet():
+    """Adds a new pet, form validation is done on the server side and
+    set explicitly in model"""
     form = AddPetForm()
     # Form validation
     if form.validate_on_submit():
