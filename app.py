@@ -72,6 +72,10 @@ def add_new_pet():
                    else pet.age)
         pet.notes = (form.notes.data if form.notes.data and len(
             form.notes.data) > 0 else pet.notes)
+        db.session.verified = (form.photo_url.data and
+                               len(form.photo_url.data) > 0) or \
+                              (form.age.data and form.age.data >= 0) or \
+                              (form.notes.data and len(form.notes.data) > 0)
         db.session.commit()
         flash(f"Pet {pet.name} "
               f"({pet.species}) "
