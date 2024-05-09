@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block title %}
+Pet Add Form
+{% endblock %}
+{% block header %}
+<div class="container mx-auto" style="width: 400px" >
+<p class="h1">Pet {{form.name.data}}</p>
+{% endblock %}
+
+{% block messages %}
+{% endblock %}
+
+{% block content %}
+<form id="pet-add-form" class="mx-auto" style="width: 480px" method="POST">
+ {% for field in form %}
+  {% if field.widget.input_type == 'hidden' %}
+  {{ form.hidden_tag() }}
+  {% elif field.type == 'RadioField' %}
+    <div class="form-check">
+      {{field.label(class='form-check-label text-muted')}}
+  <ul class="form-check" id="{{field.name}}">
+       {% set ns = namespace(counter=0) %}
+      {% for option, label in form.species.choices %}
+    <li>
+        {% if form.hidden_species == option or label == form.hidden_species %}
+        <input class="form-check-input"
+               id="{{field.name}}-{{ns.counter}}"
+               name="species"
+               type="radio" value="{{option}}" checked disabled />
+        <label class="form-check-label text-primary" for="{{field.name}}-{{ns.counter}}">
+          {{label}}</label>
+        {% else %}
+        <input class="form-check-input" id="{{field.name}}-{{ns.counter}}"
+               name="species"
+               type="radio" value="{{option}}" disabled />
+        <label class="form-check-label text-secondary"
+                for="{{field.name}}-{{ns.counter}}">
+          {{label}}</label>
+        {% endif %}
+    </li>
+      {% set ns.counter = ns.counter + 1 %}
+      {{counter}}
+      {% endfor %}
+      {{counter}}
+    </ul>
+    </div>
+  {% elif field.type == 'IntegerField' and field.name == "age" %}
+    <div class="form-floating mx-auto form-control-md">
+      {{ field( class="form-control", disabled=True) }}
+      {% for error in field.errors %}
+    <span class="text-danger mx-auto">{{ error }}</span>
+      {% endfor %}
+      {{ field.label( class="form-label text-secondary") }}
+    <br />
+    </div>
+  {% elif field.type == 'StringField' and field.name == "name" %}
+    <div class="form-floating mx-auto form-control-md">
+      {{ field( class="form-control text-secondary", disabled=True) }}
+      {% for error in field.errors %}
+    <span class="text-danger mx-auto">{{ error }}</span>
+      {% endfor %}
+      {{ field.label( class="form-label") }}
+    <br />
+    </div>
+  {% elif field.type == 'BooleanField' and field.name == "available" %}
+    <div class="form-check">
+      {% if form.hidden_available %}
+      <input type="radio" class="btn-check" name="available"
+             id="available" autocomplete="off" onclick="availableCheck()"
+             checked>
+      <label class="btn btn-outline-primary" for="available">Available
+      </label>
+      <input type="radio" class="btn-check" name="notAvailable"
+             id="notAvailable" autocomplete="off" onclick="notAvailableCheck()">
+      <label class="btn btn-outline-danger" for="notAvailable">Not
+        Available</label>
+      {% else %}
+      <input type="radio" class="btn-check" name="available"
+             id="available" autocomplete="off" onclick="availableCheck()">
+      <label class="btn btn-outline-primary" for="available">Available
+      </label>
+      <input type="radio" class="btn-check" name="notAvailable"
+             id="notAvailable" autocomplete="off" onclick="notAvailableCheck()"
+              checked>
+      <label class="btn btn-outline-danger" for="notAvailable">Not
+        Available</label>
+      {% endif %}
+      {% for error in field.errors %}
+    <span class="text-danger mx-auto">{{ error }}</span>
+      {% endfor %}
+    <br />
+    </div>
+  {% else %}
+    <div class="form-floating mx-auto form-control-md">
+      {{ field( class="form-control") }}
+      {% for error in field.errors %}
+    <span class="text-danger mx-auto">{{ error }}</span>
+      {% endfor %}
+      {{ field.label( class="form-label") }}
+    <br />
+    </div>
+  {% endif %}
+  {% endfor %}
+  <br />
+  <button type="submit"
+          class="btn btn-primary bg-primary light">
+    Submit
+  </button>
+  <button type="button"
+          class="btn btn-primary bg-danger text-light"
+          onclick="goToHome();">
+    Back
+  </button>
+</form>
+</div>
+{% endblock %}
+
+{% block javascript %}
+{{ super() }}
+{% endblock %}

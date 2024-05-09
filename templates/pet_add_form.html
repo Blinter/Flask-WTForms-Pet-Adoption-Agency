@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}
+Pet Add Form
+{% endblock %}
+{% block header %}
+<div class="form-check mx-auto" style="width: 480px" >
+<p class="h1">Add Pet</p>
+{% endblock %}
+
+{% block messages %}
+{% endblock %}
+
+{% block content %}
+<form id="pet-add-form" class="mx-auto" style="width: 480px" method="POST">
+  {% for field in form %}
+  {% if field.widget.input_type == 'hidden' %}
+  {{ form.hidden_tag() }}
+  {% elif field.type == 'RadioField' %}
+    <div class="form-floating mx-auto form-control-md">
+      <div class="form-check">
+        {{ field.label( class="form-check-label") }}
+        {{ field( class=" form-check") }}
+      </div>
+    </div>
+  <br/>
+  {% else %}
+    <div class="form-floating mx-auto form-control-md">
+      {{ field( class="form-control") }}
+      {% for error in field.errors %}
+    <span class="text-danger mx-auto">{{ error }}</span>
+      {% endfor %}
+      {{ field.label( class="form-label") }}
+    <br />
+    </div>
+  {% endif %}
+  {% endfor %}
+  <br />
+  <button type="submit"
+          class="btn btn-primary bg-primary light">
+    Submit
+  </button>
+  <button type="submit"
+          class="btn btn-primary bg-danger text-light"
+          onclick="location.href='/'">
+    Cancel
+  </button>
+</form>
+</div>
+{% endblock %}
+{% block javascript %}
+{{ super() }}
+{% endblock %}

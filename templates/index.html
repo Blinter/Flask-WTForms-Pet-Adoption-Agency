@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}
+Pet Adoption Agency
+{% endblock %}
+{% block header %}
+<div class="d-flex flex-wrap gap-3 mx-auto" style="width: 480px;">
+<p class="h1">Pets</p>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap gap-3 mx-auto" style="width: 480px;">
+
+{% block messages %}
+{% endblock %}
+
+{% for pet in pets_available %}
+<div class="p-2 align-self-center">
+	{% if pet.photo_url %}
+	<img src="{{pet.photo_url}}" alt="Pet Image" class="img-thumbnail" /><br/>
+	{% endif %}
+	<a href="/{{pet.id}}" aria-valuetext="View {{pet.name}} details">
+		{{pet.name}}
+	</a>
+	{% if pet.available %}
+	<div class="flex-shrink-0"> is <b><small
+			class="text-success">available
+	</small></b></div><br/>
+	{% else %}
+	<div class="flex-shrink-0"> is <b><small
+			class="text-danger">not available
+	</small></b></div><br/>
+	{% endif %}
+
+</div>
+{% endfor %}
+{% for pet in pets_not_available %}
+<div class="p-2 align-self-center">
+	{% if pet.photo_url %}
+	<img src="{{pet.photo_url}}" alt="Pet Image" class="img-thumbnail" /><br/>
+	{% endif %}
+	<a href="/{{pet.id}}" aria-valuetext="View {{pet.name}} details">
+		{{pet.name}}
+	</a>
+	{% if pet.available %}
+	<div class="flex-shrink-0"> is <b><small
+			class="text-success">available
+	</small></b></div><br/>
+	{% else %}
+	<div class="flex-shrink-0"> is <b><small
+			class="text-danger">not available
+	</small></b></div><br/>
+	{% endif %}
+
+</div>
+{% endfor %}
+</div>
+<div class="d-flex flex-wrap gap-3 mx-auto" style="width: 480px;">
+  <button type="submit" class="btn btn-secondary"
+		  onclick="location.href='/add'">
+    Add a Pet
+  </button>
+</div>
+{% endblock %}
+
+{% block javascript %}
+{{ super() }}
+{% endblock %}
