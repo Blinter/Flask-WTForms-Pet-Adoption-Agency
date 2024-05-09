@@ -39,9 +39,7 @@ Pet Add Form
         {% endif %}
     </li>
       {% set ns.counter = ns.counter + 1 %}
-      {{counter}}
       {% endfor %}
-      {{counter}}
     </ul>
     </div>
   {% elif field.type == 'IntegerField' and field.name == "age" %}
